@@ -89,3 +89,5 @@ Posso iniziare a lavorare sul progetto vue lavorando nella cartella JS
 Creo in js App.vue
 appvue dovra innestarsai in guest.blade e questo bisogna dirllo tramite APPGUEST.JS
 e qui che devo dire prendi appvue e innestalo in home blade in guest
+
+38recap

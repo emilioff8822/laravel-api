@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\PostController;
 
 
 /*
@@ -23,14 +23,14 @@ Route::get('/prova-api', function () {
         'lastname' => 'Cellini'
     ];
 
-    return response()->json(compact('user'));
+    return response()->json($user);
 
 });
 
 Route::
-        namespace('Api')
-    ->prefix('posts')
-    ->group(function () {
+namespace('Api')
+->prefix('posts')
+->group(function () {
 
         Route::get('/', [PostController::class, 'index']);
     });

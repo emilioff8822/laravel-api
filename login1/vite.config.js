@@ -2,7 +2,7 @@ import {
     defineConfig
 } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import vue from '@vitejs/plugin-vue';
+import vue from '@vitejs/plugin-vue'
 const path = require('path') // <-- require path from node
 
 export default defineConfig({
@@ -13,14 +13,14 @@ export default defineConfig({
             refresh: true,
         }),
         vue({
-            template:{
-                transformAssetUrls:{
+            template: {
+                transformAssetUrls: {
                     base: null,
-                    includeAbsolute: false
-                }
+                    includeAbsolute:false
             }
-        })
+        }
 
+        })
     ],
     // Add resolve object and aliases
     resolve: {

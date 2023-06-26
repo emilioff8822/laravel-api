@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PostController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/prova-api', function () {
+
+    $user = [
+        'name' => 'Emilio',
+        'lastname' => 'Cellini'
+    ];
+
+    return response()->json(compact('user'));
+
 });
+
+Route::
+        namespace('Api')
+    ->prefix('posts')
+    ->group(function () {
+
+        Route::get('/', [PostController::class, 'index']);
+    });

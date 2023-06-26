@@ -71,3 +71,21 @@ inizio INSTALLANDO VUE COME PLUGIN
 npm i vue@next
 
 npm i @vitejs/plugin-vue --force
+
+vado in vite config.js e gli dico di prendere il plugin
+
+import vue from '@vitejs/plugin-vue';
+
+vue({
+template:{
+transformAssetUrls:{
+base: null,
+includeAbsolute: false
+}
+}
+})
+
+Posso iniziare a lavorare sul progetto vue lavorando nella cartella JS
+Creo in js App.vue
+appvue dovra innestarsai in guest.blade e questo bisogna dirllo tramite APPGUEST.JS
+e qui che devo dire prendi appvue e innestalo in home blade in guest

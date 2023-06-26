@@ -90,4 +90,61 @@ Creo in js App.vue
 appvue dovra innestarsai in guest.blade e questo bisogna dirllo tramite APPGUEST.JS
 e qui che devo dire prendi appvue e innestalo in home blade in guest
 
+in app guest scrivo
+
+import { createApp } from "vue";
+import App from './App.vue';
+
+createApp(App).mount('#app');
+
 38recap
+
+CHIAMATA API
+in Js creo la cartella store e poi store.js
+-Salvo l'endpoint base bnello store
+
+import { reactive } from "vue";
+
+export const store = reactive({
+
+    apiUrl: 'http://127.0.0.1:8000/api/'
+
+})
+
+-vado in APPVUE e porendo in poost che avevo preso in post controller API con post all
+
+<script>
+
+import { store } from './store/store.js';
+import axios from 'axios';
+
+export default {
+    name: 'home',
+    data() {
+        return {
+        posts:[]
+    }
+
+    },
+    methods: {
+        getApi() {
+            console.log(store.apiUrl);
+            //faccio la chiamata axios
+            axios.get(store.apiUrl + 'posts')
+                .then(results => {
+                    this.posts = results.data;
+                    console.log(results.data);
+
+            })
+        }
+    },
+
+    mounted() {
+        this.getApi();
+    }
+
+
+}
+</script>
+
+PER STAMPARLI

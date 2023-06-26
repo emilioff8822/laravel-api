@@ -65,3 +65,9 @@ namespace('Api')
 ---INNESTO VUE IN LARAVEL NELLE VIEWS IN GUEST in home blade
 
 home blade estende layouts guest
+
+inizio INSTALLANDO VUE COME PLUGIN
+
+npm i vue@next
+
+npm i @vitejs/plugin-vue --force

@@ -45,7 +45,10 @@ export default {
 
         <ul>
             <li v-for="post in posts" :key="post.id">
-                <span>{{ post.title }}</span> - <span>{{ formatData(post.date) }}</span>
+                <span>{{ post.title }}</span> - <span>{{ formatData(post.date) }}</span>-
+                <strong>{{post.category.name}}</strong>-
+                <strong v-for="(tag,index) in post.tags" key="index">{{ tag.name }}</strong>
+
             </li>
         </ul>
 

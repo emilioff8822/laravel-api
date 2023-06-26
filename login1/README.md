@@ -164,3 +164,8 @@ PER STAMPARLI nel template
 </template>
 
 DATA FORMATTATA IN ITA
+
+PAGINAZIONE QUANDO METTO IN POSTCONTROLLER API PAGINATE 10 MI METTE TUTTI I POST DENTRO Data
+
+creo dei bottoni chje al click opassano i link diversi per ogni pagina
+di default si parte da 1

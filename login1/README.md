@@ -147,4 +147,20 @@ export default {
 }
 </script>
 
-PER STAMPARLI
+PER STAMPARLI nel template
+<template>
+
+<div class="container">
+<h1>Elenco Post</h1>
+
+        <ul>
+            <li v-for="post in posts" :key="post.id">
+                <span>{{ post.title }}</span> - <span>{{ post.date }}</span>
+            </li>
+        </ul>
+
+    </div>
+
+</template>
+
+DATA FORMATTATA IN ITA

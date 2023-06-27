@@ -469,7 +469,7 @@ infine lo stampo
 <button class="btn-cat" v-for="category in categories " :key="category.id">{{category.name}}</button>
 
 RIFACCIIO la stessa cosa per i tags
-VADO in api postcontroller aggiungo sotto getCategories
+1 VADO in api postcontroller aggiungo sotto getCategories
 
 public function getTags(){
 
@@ -479,11 +479,11 @@ public function getTags(){
 
 }
 
-Vado nelle routes in api.php e aggiungo
+2 Vado nelle routes in api.php e aggiungo
 
 Route::get('/tags', [PostController::class, 'getTags']);
 
-infine aggiungo tutto in blog vue
+3 infine aggiungo tutto in blog vue
 
 nei methods
 
@@ -501,21 +501,33 @@ nel mounted
 
 e nei data tags:[]
 
-infine lo stampo
+4 infine lo stampo
 
  <h2>Tags</h2>
             <button class="btn-cat" v-for="tag in tags " :key="tag.id">{{ tag.name }}</button>
 
 CLICK SUL BOTTONE CATEGORIES E VISUALIZZO TUTTI I POST CHE HANNO QUELLA CATEGORIA
-vado in post controller e CREO UNA TERZA API
+1vado in post controller e CREO UNA TERZA API
 
-devo creare una funzione che mostri il post in base alla categoria che passo
+in post controller devo creare una funzione che mostri il post in base alla categoria che passo
 
 public function getPostsByCategory($id){
 $posts = Post::where('category_id', $id)->with('category', 'tags')->paginate(10);
 return response()->json($posts);
 }
 
-devo mettere la rotta in api php
+2DEVO mettere la rotta in api php
 
 Route::get('/post-category/{id}', [PostController::class, 'getPostsByCategory']);
+
+in blog vue metto un altra funzione in methods
+
+//metto il metodo per il click sulle categorie per visualizzare tutti i post con quelle categories
+
+        getPostCategory(id) {
+        this.getApi(store.apiUrl + 'posts/post-category/' +id)
+        }
+
+3infine per staparle aggiungo al bottone delle categorie il click per visualizzare ilo dettaglio dei post con una specifica categoria
+
+<button class="btn-cat" v-for="category in categories " :key="category.id" @click="getPostCategory(category.id)">{{category.name}}</button>

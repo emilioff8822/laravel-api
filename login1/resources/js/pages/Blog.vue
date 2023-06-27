@@ -52,11 +52,13 @@ export default {
         },
 
 
-
+// metodo per l'ora
         formatData(dateString) {
             const d = new Date(dateString);
             return d.toLocaleDateString();
         },
+
+        //metto il metodo per il click sulle categorie per visualizzare tutti i post con quelle categories
 
         getPostCategory(id) {
         this.getApi(store.apiUrl + 'posts/post-category/' +id)

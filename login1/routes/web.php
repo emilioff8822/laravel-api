@@ -27,12 +27,18 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('home');
         Route::resource('posts', PostController::class);
-        Route::resource('categories', CategoryController::class);// gli do il nome della tabella, categories
+        Route::resource('categories', CategoryController::class);
         Route::resource('tags', TagController::class);
         Route::get('orderby/{direction}', [PostController::class, 'orderby'])->name('orderby');
-        Route::get('category-posts}', [PostController::class, 'categoryPosts'])->name('category_posts');
-        Route::get('tag-posts}', [PostController::class, 'tagsPosts'])->name('tags_posts');
-
+        Route::get('category-posts', [PostController::class, 'categoryPosts'])->name('category_posts');
+        Route::get('tag-posts', [PostController::class, 'tagsPosts'])->name('tags_posts');
 });
 
 require __DIR__.'/auth.php';
+
+
+//rotta trick per gestire il router di vue
+
+Route::get('{any?}',function(){
+    return view('guest.home');
+})->where('any','.*')->name('home');

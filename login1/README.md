@@ -301,3 +301,122 @@ Vado in pagine e creo blog.vue
 E lo metto anche. Nei router link dell header vue
 
 Nel blog devo fare la chiamata API
+IN BLOG
+
+<script>
+import { store } from '../store/store';
+import axios from 'axios';
+import ItemPost from '../components/ItemPost.vue';
+
+export default {
+    name: 'Contacts',
+    components: {
+        ItemPost
+
+    },
+      data() {
+        return {
+            posts: [],
+            links: [],
+            first_page_url: null,
+            last_page_url: null,
+            current_page: null,
+            last_page: null
+        };
+    },
+     methods: {
+        getApi(endpoint) {
+            console.log(store.apiUrl);
+            //faccio la chiamata axios
+            axios.get(endpoint)
+                .then(results => {
+                    this.posts = results.data.data
+                    this.links = results.data.links
+                    this.first_page_url = results.data.first_page_url
+                    this.last_page_url = results.data.last_page_url
+                    this.current_page = results.data.current_page
+                    this.last_page = results.data.last_page
+                });
+        },
+        formatData(dateString) {
+            const d = new Date(dateString);
+            return d.toLocaleDateString();
+        }
+    },
+    mounted() {
+        this.getApi(store.apiUrl + 'posts');
+    }
+
+
+}
+</script>
+
+<template>
+    <div class="container-inner">
+        <h1>Blog</h1>
+
+        <div>
+    <ItemPost v-for="post in posts" :key="post.id"/>
+
+        </div>
+
+
+
+    </div>
+
+</template>
+
+IN ITEM POST USO LE PROPS
+
+<script>
+export default {
+    name: 'ItemPost',
+    props: {
+    post: Object
+    }
+
+}
+</script>
+
+In item post per gestire la data uso una computed
+
+<script>
+export default {
+    name: 'ItemPost',
+    props: {
+    post: Object
+    },
+    //utilizzo una computed per avere la data in italiano
+    computed: {
+        formattedData() {
+            const d = new Date(this.post.date);
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            };
+            //funzione stefano sigla data
+            function getUserLocale() {
+                const userLocale = navigator.languages && navigator.languages.length
+                    ? navigator.languages[0]
+                    : navigator.language;
+                return userLocale;
+            }
+
+            return d.toLocaleString(getUserLocale(), options);
+    }
+    }
+
+}
+</script>
+
+<template>
+    <div>
+        <h3> Titolo: {{post.title}}</h3>
+        <h3>{{ formattedData }}</h3>
+        <h3>Categoria</h3>
+        <h3>Tag</h3>
+    </div>
+
+</template>

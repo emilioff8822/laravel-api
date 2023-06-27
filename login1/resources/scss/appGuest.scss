@@ -1,9 +1,9 @@
 
-@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap/scss/bootstrap';
 
 body{
     background-color: darkgreen;
-    color: wheat;
+    color: rgb(25, 25, 25);
 }
 
 .container{
@@ -11,4 +11,15 @@ body{
 width: 90%;
 max-width: 1200px;
 margin: 50px auto;
+}
+
+.container-inner{
+    background-color: white;
+    min-height: 400px;
+    color: black;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px   ;
+    margin: 20px 0;
+
 }

@@ -1,15 +1,25 @@
 
-
 <script>
+//importo l'header
+import Header from './components/Header.vue';
+
 export default {
-name: 'App'
+    name: 'App',
+ //importo l'header nei componenti , infine lo metto nel template
+    components: {
+        Header
+    }
+
 
 }
 </script>
 
 
 <template>
-    <router-view></router-view>
+<Header />
+
+
+ <router-view></router-view>
 
 
 </template>

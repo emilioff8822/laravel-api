@@ -254,18 +254,30 @@ Dentro metto
 
 Header.vue
 
-In app vue importo header
+In App.vue importo header
 
-Import header from./components
+<script>
+//importo l'header
+import Header from './components/Header.vue';
 
-Export default {
+export default {
+    name: 'App',
+ //importo l'header nei componenti , infine lo metto nel template
+    components: {
+        Header
+    }
 
-Name:App
-Components :{
-Header
+
 }
+</script>
 
----
+<template>
+
+<Header />
+
+<router-view></router-view>
+
+## </template>
 
 In header faccio il menu Di navigazione
 
@@ -285,46 +297,7 @@ Do gli stili in appguest
 —API
 Vado in pagine e creo blog.vue
 
--vado nel router e importo import blog ‘./pages/blog.vue’
+-vado nel router js e importo import blog ‘./pages/blog.vue’
 E lo metto anche. Nei router link dell header vue
 
 Nel blog devo fare la chiamata API
-Import store. ../store/store
-Import axios
-Import Itempost
-
-Components :{
-
-}
-
-Prendo tutti data
-
-Creo item post.vue che avrà il dettaglio del post
-
--   per scrivere nelle card uso le props in itempostvue
-
-props{
-Post : object
-
-}
-
-Template
-
-V-for post in posts
-
-In itempost vue script uso una computed
-
-function getUserLocale(){
-const userLocale = navigator.languages && navigator.languages.length
-? navigator.languages[0]
-: navigator.language;
-return userLocale;
-}
-
-Per stampare i tag facciamo una computed category(){
-
-if(!this.post.category) return no category
-
-Return `<span>`$
-
-Per stampare tag e categorie vado nel progetto di laravel

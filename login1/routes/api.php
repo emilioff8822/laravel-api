@@ -33,4 +33,5 @@ namespace('Api')
 ->group(function () {
 
         Route::get('/', [PostController::class, 'index']);
+        Route::get('/categories', [PostController::class, 'getCategories']);
     });

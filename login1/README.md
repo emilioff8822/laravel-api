@@ -420,3 +420,46 @@ export default {
     </div>
 
 </template>
+
+SECONDA CHIAMATA API
+
+abbiamo finora una chiama quella in controller api PostController
+ne facciamo una seconda
+
+//siccome voglio con dei pulsanti in vuejs visualizzare tutte le categorie devo fare una seconda chiamata API
+//devo creare una seconda rotta api che restituisca un json con tutte le categorie
+
+public function getCategories(){
+
+        $category = Category::all();
+
+        return response()->json($category);
+
+}
+
+VADO in ROUTES IN API.PHP
+e aggiungo la rotta
+
+Route::get('/categories', [PostController::class, 'getCategories']);
+
+in thunderclient da qui posso vedere le rotte http://127.0.0.1:8000/api/posts/categories
+ce il prefisso davanti posts che abbiamo messo nelle rotte api
+
+// nei methods aggiungo getcategories dell;' API -PostController, l'apiurl e' store.js e gli concateno categories
+
+        getCategories() {
+            axios.get(store.apiUrl + 'posts/categories')
+                .then(result => {
+                    this.categories = result.data;
+            })
+
+        },
+
+        lo metto nel mounted alla fine
+
+           mounted() {
+        this.getApi(store.apiUrl + 'posts');
+        this.getCategories();
+    }
+
+}

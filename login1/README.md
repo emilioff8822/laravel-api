@@ -505,3 +505,17 @@ infine lo stampo
 
  <h2>Tags</h2>
             <button class="btn-cat" v-for="tag in tags " :key="tag.id">{{ tag.name }}</button>
+
+CLICK SUL BOTTONE CATEGORIES E VISUALIZZO TUTTI I POST CHE HANNO QUELLA CATEGORIA
+vado in post controller e CREO UNA TERZA API
+
+devo creare una funzione che mostri il post in base alla categoria che passo
+
+public function getPostsByCategory($id){
+$posts = Post::where('category_id', $id)->with('category', 'tags')->paginate(10);
+return response()->json($posts);
+}
+
+devo mettere la rotta in api php
+
+Route::get('/post-category/{id}', [PostController::class, 'getPostsByCategory']);

@@ -29,6 +29,18 @@ public function getCategories(){
 
 }
 
+//voglio cliccare su una categorie a e visualizzare tutti i pos che c'e' l'hanno
+//devo quindi creare una funzione che mostri il post in base alla categoria che passo
+//sto creando un altra API
+
+public function getPostsByCategory($id){
+$posts = Post::where('category_id', $id)->with('category', 'tags')->paginate(10);
+return response()->json($posts);
+}
+
+
+
+
 // faccio la stessa chiamata API  MA PER I TAGS
 public function getTags(){
 

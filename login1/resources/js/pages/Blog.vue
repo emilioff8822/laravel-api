@@ -56,7 +56,12 @@ export default {
         formatData(dateString) {
             const d = new Date(dateString);
             return d.toLocaleDateString();
+        },
+
+        getPostCategory(id) {
+        this.getApi(store.apiUrl + 'posts/post-category/' +id)
         }
+
     },
     mounted() {
         this.getApi(store.apiUrl + 'posts');
@@ -88,7 +93,7 @@ export default {
 
             <div class="right">
             <h2>Categorie</h2>
-            <button class="btn-cat" v-for="category in categories " :key="category.id">{{category.name}}</button>
+            <button class="btn-cat" v-for="category in categories " :key="category.id" @click="getPostCategory(category.id)">{{category.name}}</button>
 
             <h2>Tags</h2>
             <button class="btn-cat" v-for="tag in tags " :key="tag.id">{{ tag.name }}</button>
@@ -117,6 +122,7 @@ export default {
 
 .btn-cat{
     margin: 10px;
+    cursor: pointer;
 }
 
 </style>

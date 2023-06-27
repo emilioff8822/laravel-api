@@ -24,7 +24,13 @@ export default {
             }
 
             return d.toLocaleString(getUserLocale(), options);
-    }
+        },
+        //faccio una computed che qualora non ci sia una categoria  ci restituisce -no category-
+        category() {
+            if (!this.post.category) return '-no category';
+            return `<span class="badge badge-category">${this.post.category.name} </span>`
+
+        }
     }
 
 }
@@ -33,10 +39,12 @@ export default {
 
 <template>
     <div>
-        <h3> Titolo: {{post.title}}</h3>
-        <h3>{{ formattedData }}</h3>
-        <h3>Categoria</h3>
-        <h3>Tag</h3>
+        <h3> Titolo Post: {{post.title}} -Id: {{post.id}}</h3>
+        <p class="date"> <strong>Scritto il giorno:</strong> {{ formattedData }}</p>
+        <p v-html="category"></p>
+        <ul>
+            <li class="badge badge-tag" v-for="tag in post.tags" :key="tag.id">{{ tag.name }}</li>
+        </ul>
     </div>
 
 
@@ -47,6 +55,22 @@ export default {
 div{
     border-bottom: 1px solid black;
     margin-bottom: 20px;
+    p{
+        margin: 10px 0;
+    }
+    .date{
+        font-size: .9rem;
+        font-style: italic;
+    }
+}
+
+ul{
+    display: flex;
+    list-style: none;
+    margin-bottom: 10px;
+    li{
+        margin-right: 10px;
+    }
 }
 
 </style>

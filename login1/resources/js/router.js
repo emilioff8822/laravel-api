@@ -7,7 +7,7 @@ import Home from './pages/Home.vue';
 import Contacts from './pages/Contacts.vue';
 
 //inizializzo una variabile che chiamo route
-const route = createRouter({
+const router = createRouter({
     history: createWebHistory(),
     //questa è la rotta home
     routes: [
@@ -29,3 +29,7 @@ const route = createRouter({
 
  })
 
+export {router}
+
+//alla fine e' tutto confenzionato ma biosgna importarlo nel nostro progetto vue
+//lo devo importare nel javascrip principale nel mio caso AppGuest.js

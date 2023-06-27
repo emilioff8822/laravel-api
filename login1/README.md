@@ -174,13 +174,9 @@ di default si parte da 1
 
 27 06 ROUTER
 
-INSTALLAZIONE
+step router
 
 npm install vue-router@4 —force
-
-ROUTER
-
--   creo in js un file che chiamo router.js
 
 Creo all inter di js una cartella chiamata pages con dentro
 
@@ -188,55 +184,57 @@ Home.vue
 
 Contacts.vue
 
-Error404.vue
+in js creo un file chiamato router.js
 
-In laravel
-Creo il router che assomiglia a web php ma in javascript
+//importo il router
+import { createRouter, createWebHistory } from "vue-router";
 
-Lo creo in js e lo chiamo router.js
-In router js
+//importo le pagine che ho creato home, contacts, erro404 ecc..
 
-Import {createRouter, createWebHistory} from “vue=router”;
-Import Home from ‘./pages/Home.vue’
-Import Contacts from ‘./pages/Contacts.vue’
-Import Erro404 from ‘./pages/Error404.vue’
+import Home from './pages/Home.vue';
+import Contacts from './pages/Contacts.vue';
 
-Const route = createRouter({
-History:createWebHistory (),
-//metto le rotte che sono un array di oggetti
-Routes:[
+//inizializzo una variabile che chiamo route
+const router = createRouter({
+history: createWebHistory(),
+//questa è la rotta home
+routes: [
 {
-Path: ‘/‘,
-name: ‘home‘,
-component: ‘home‘,},
-
+path: '/',
+name: 'home',
+component: Home
+},
+//questa e' la rotta contatti
 {
-Path: ‘/contacts‘,
-name: ‘contacts‘,
-component: ‘home‘
-}
+path: '/contacts',
+name: 'Contacts',
+component: Contacts
+},
 
-// rotta per 404
-
-{
-path: '/:pathMatch(._)_',
-component: Error404
-}
-
-]
+    ]
 
 })
 
-Export {router}
+export {router}
 
-Importo in appGuest il router (o main.js)
+//alla fine e' tutto confenzionato ma biosgna importarlo nel nostro progetto vue
+//lo devo importare nel javascrip principale nel mio caso AppGuest.js
 
-Importo {router} from “./router”;
+--in main.js in questo caso appGuest.js lo collego
 
-CreateApp(app).use(router).mount(‘#app’)
+import { createApp } from "vue";
+import App from './App.vue';
 
--VADO IN WEB PHP E METTO LA ROTTA TRICK PER IL ROUTER DI VUE
-Va aggiunto se abbiamo vue dentro laravel
+//importo il router.js
+import { router } from "./router";
+
+//dico a createapp di usare il router
+
+createApp(App).use(router).mount('#app');
+
+metto la rotta trick in web php
+
+//rotta trick per gestire il router di vue
 
 Route::get('{any?}',function(){
 return view('guest.home');

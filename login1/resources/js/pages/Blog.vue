@@ -60,6 +60,13 @@ export default {
 
 
     </div>
+
+        <div>
+                <button @click="getApi(first_page_url)" :disabled="current_page == 1">Inizio</button>
+                <button v-for="(link, index) in links" key="index" v-html="link.label" @click="getApi(link.url)" :disabled="link.active || !link.url"></button>
+                <button @click="getApi(last_page_url)" :disabled="current_page == last_page">Fine</button>
+
+            </div>
 </template>
 
 <style>

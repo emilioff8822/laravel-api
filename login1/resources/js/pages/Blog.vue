@@ -16,7 +16,8 @@ export default {
             last_page_url: null,
             current_page: null,
             last_page: null,
-            categories:[]
+            categories: [],
+            tags: []
         };
     },
     methods: {
@@ -42,6 +43,14 @@ export default {
 
         },
 
+         getTags() {
+            axios.get(store.apiUrl + 'posts/tags')
+                .then(result => {
+                    this.tags = result.data;
+                })
+
+        },
+
 
 
         formatData(dateString) {
@@ -52,6 +61,7 @@ export default {
     mounted() {
         this.getApi(store.apiUrl + 'posts');
         this.getCategories();
+        this.getTags();
     }
 }
 </script>
@@ -78,7 +88,11 @@ export default {
 
             <div class="right">
             <h2>Categorie</h2>
-            <button v-for="category in categories " :key="category.id">{{category.name}}</button>
+            <button class="btn-cat" v-for="category in categories " :key="category.id">{{category.name}}</button>
+
+            <h2>Tags</h2>
+            <button class="btn-cat" v-for="tag in tags " :key="tag.id">{{ tag.name }}</button>
+
 
         </div>
 
@@ -99,6 +113,10 @@ export default {
     border-left: 1px solid black ;
     padding: 0  30px;
     }
+}
+
+.btn-cat{
+    margin: 10px;
 }
 
 </style>

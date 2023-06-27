@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -28,5 +29,13 @@ public function getCategories(){
 
 }
 
+// faccio la stessa chiamata API  MA PER I TAGS
+public function getTags(){
+
+        $tags = Tag::all();
+
+        return response()->json($tags);
+
+}
 
 }

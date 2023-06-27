@@ -445,6 +445,7 @@ Route::get('/categories', [PostController::class, 'getCategories']);
 in thunderclient da qui posso vedere le rotte http://127.0.0.1:8000/api/posts/categories
 ce il prefisso davanti posts che abbiamo messo nelle rotte api
 
+vado in vue blog
 // nei methods aggiungo getcategories dell;' API -PostController, l'apiurl e' store.js e gli concateno categories
 
         getCategories() {
@@ -463,3 +464,44 @@ ce il prefisso davanti posts che abbiamo messo nelle rotte api
     }
 
 }
+
+infine lo stampo
+<button class="btn-cat" v-for="category in categories " :key="category.id">{{category.name}}</button>
+
+RIFACCIIO la stessa cosa per i tags
+VADO in api postcontroller aggiungo sotto getCategories
+
+public function getTags(){
+
+        $tags = Tag::all();
+
+        return response()->json($tags);
+
+}
+
+Vado nelle routes in api.php e aggiungo
+
+Route::get('/tags', [PostController::class, 'getTags']);
+
+infine aggiungo tutto in blog vue
+
+nei methods
+
+getTags() {
+axios.get(store.apiUrl + 'posts/tags')
+.then(result => {
+this.tags = result.data;
+})
+
+        },
+
+nel mounted
+
+        this.getTags();
+
+e nei data tags:[]
+
+infine lo stampo
+
+ <h2>Tags</h2>
+            <button class="btn-cat" v-for="tag in tags " :key="tag.id">{{ tag.name }}</button>

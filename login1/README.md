@@ -710,3 +710,14 @@ infine lo metto in pagina
 ====BOTTONE RESET
 
 DEVE CHIAMARE LA FUNZIONE AL MOUNTED CHE DA TUTTI I RIOSULTATI SENZXA FILTRO
+metto all end point un default
+
+methods: {
+//do il deault all'endpoint e lo tolgo dal mounted
+getApi(endpoint = store.apiUrl + 'posts') {
+this.loaded = false;
+poi nel bottone
+<button class="btn-reset" @click="getApi()">RESET</button>
+
+=====
+DETTAGLIO POST

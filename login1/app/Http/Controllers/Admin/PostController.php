@@ -99,6 +99,8 @@ class PostController extends Controller
         $form_data= $request->all();
         $form_data['slug'] = Post::generateSlug($form_data['title']);
         $form_data['date'] = date('Y-m-d');
+            $form_data['user_id'] = auth()->id(); // Aggiungere questa linea
+
 
         //verifico se e' stata caricata un immagine
         if(array_key_exists('image', $form_data)){

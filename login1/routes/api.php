@@ -27,14 +27,13 @@ Route::get('/prova-api', function () {
 
 });
 
-Route::
-namespace('Api')
+Route::namespace('Api')
 ->prefix('posts')
 ->group(function () {
-
+        Route::get('/post-category/{id}', [PostController::class, 'getPostsByCategory']);
+        Route::get('/post-tag/{id}', [PostController::class, 'getPostsByTag']);
+        Route::get('/{slug}', [PostController::class, 'getPostDetail']);
         Route::get('/', [PostController::class, 'index']);
         Route::get('/categories', [PostController::class, 'getCategories']);
         Route::get('/tags', [PostController::class, 'getTags']);
-        Route::get('/post-category/{id}', [PostController::class, 'getPostsByCategory']);
-        Route::get('/post-tag/{id}', [PostController::class, 'getPostsByTag']);
-    });
+});

@@ -78,4 +78,27 @@ public function getTags(){
 
 }
 
+//aggiungo una funzione per il dettaglio dei post
+
+public function getPostDetail($slug){
+
+    $post = Post::where('slug', $slug)->with('user', 'categories', 'tags')->first();
+
+    //aggiungo la condizioone di veriifca dell'immagine , voglio controllare se ce lato server
+    // se c'e' l'img mi dai quella caricata
+        if ($post->image_path)
+
+        $post->image_path = asset('storage/' . $post->image_path);
+        else{ //alrimenti mi dai il placeholder che ho messo in storage uploads
+        $post->image_path = asset('storage/uploads/placeholder.png');
+        //come nome metto no image
+        $post->image_original_name = ' - no image -';
+        }
+
+
+    return response()->json($post);
+
+
+}
+
 }

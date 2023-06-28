@@ -19,7 +19,8 @@ class Post extends Model
     'date',
     'reading_time',
     'image_path',
-    'image_original_name'
+    'image_original_name',
+    'user_id'
 
 
     ];

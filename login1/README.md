@@ -743,3 +743,96 @@ component: PostDetail
 -NELL ITEM POST metto il router link con la rotta dettaglio ED IL PARAMETRO SLUG
 
 <h3><router-link :to="{name: 'postDetail', params:{slug: post.slug}}">Titolo Post: {{ post.title }}</router-link></h3>
+
+in item post per vedere lo slug
+
+# <h1>Titolo Post {{ this.$route.params.slug }}</h1>
+
+---
+
+VOGLIO stampare il pos avendo lo slug
+
+1 nell'API POSTCONTROLLER creo una funzione per il dettaglio del post
+public function getPostDeatail($slug){
+
+    $post = Post::where('slug', $slug)->with('user', 'categories', 'tags')->first();
+
+    return response()->json($post);
+
+2 VADO NELLE API.PHP OVVERO LE ROTTE API
+//CREo la rotta per la pagina dettaglio
+Route::get('/{slug}', [PostController::class, 'getPostsDetail']);
+
+Vado in post detail ed al mounted richiamo l'API
+
+CREO I METHODS
+
+<script>
+import axios from 'axios';
+import { store } from '../store/store';
+
+export default {
+    name: 'PostDetail',
+
+    data() {
+        return {
+            //metto post null che valorizzo in methods
+            post: null
+        }
+    },
+
+    methods: {
+        getApi() {
+            axios.get(store.apiUrl + 'posts/' + this.$route.params.slug)
+                .then(result => {
+                    this.post = result.data;
+                });
+        },
+    },
+
+    mounted() {
+        // al mounted bisogna fare una chiamata api ad una rotta del server dove cerchiamo lo slug
+        this.getApi();
+    },
+}
+
+
+
+
+
+VOGLIO USARE LE IMG
+
+-creo lo storage
+
+php artisan storage:link
+
+METTO 'immagine' in storage app public uploads
+
+il controllo see' presente o meno l'immagine voglio farlo lato SERVER non lato client
+il server deve dare l'img e se non ce quella corretta deve darmi il placeholder
+
+
+-per vado vado nel PostController API IN GETpostdetail aggiungo
+
+public function getPostDeatail($slug){
+
+    $post = Post::where('slug', $slug)->with('user', 'categories', 'tags')->first();
+
+    //aggiungo la condizioone di veriifca dell'immagine , voglio controllare se ce lato server
+    // se c'e' l'img mi dai quella caricata
+        if ($post->image_path)
+
+        $post->image_path = asset('storage/' . $post->image_path);
+        else{ //alrimenti mi dai il placeholder che ho messo in storage uploads
+        $post->image_path = asset('storage/uploads/placeholder.png');
+        //come nome metto no image
+        $post->image_original_name = ' - no image -';
+        }
+
+
+    return response()->json($post);
+
+
+}
+
+}

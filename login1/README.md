@@ -534,6 +534,7 @@ in blog vue metto un altra funzione in methods
 
 **\_**-
 
+==============================
 28 GIUGNO
 
 AGGIUNTA NOME DI CHI HA FATTO POST
@@ -555,3 +556,157 @@ return $this->hasMany(Post::class);
 }
 
 -Vado in itemPost
+
+e stampo il name
+<i>by {{ post.user.name }}<
+
+---
+
+VOGLIO UN UNICA CHIAMATA NEL POSTCONTROLLER
+anziche tante api una per i tags una per le categorie
+
+public function index(){
+//aggiungo user prendere l'user
+$posts = Post::with('category' , 'tags', 'user' )->paginate(10);
+//voglio mettere tutto dentro index per fare una sola chiamata api
+$categories = Category::all();
+$tags = Tag::all();
+
+    return response()->json(compact('posts', 'categories' , 'tags'));
+
+lo stesso in get getPostsByCategory($id
+
+public function getPostsByCategory($id){
+$posts = Post::where('category_id', $id)->with('category', 'tags' , 'user')->paginate(10);
+$categories = Category::all();
+$tags = Tag::all();
+
+    return response()->json(compact('posts', 'categories' , 'tags'));
+
+di conseguenza nel blog vue cambiera axios
+
+inserendo .post
+
+methods: {
+getApi(endpoint) {
+axios.get(endpoint)
+.then(results => {
+this.posts = results.data.posts.data;
+this.links = results.data.posts.links;
+this.first_page_url = results.data.posts.first_page_url;
+this.last_page_url = results.data.posts.last_page_url;
+this.current_page = results.data.posts.current_page;
+this.last_page = results.data.posts.last_page;
+this.categories = results.data.categories;
+this.tags = results.data.tags;
+});
+
+========
+
+Voglio che cliccando sui tag succede la stessa cosa delle catageroie ovvero vedo tutti i post con le categorie
+metto il click nel bottone
+click="getPostsTag(tag.id)
+
+mi scrivo la funzione
+
+getPostsTag(id) {
+this.getApi(store.apiUrl + 'posts/post-tag/' + id)
+}
+
+=== devo aggiungere la rotta in API.PHP
+
+        Route::get('/post-tag/{id}', [PostController::class, 'getPostsByTag']);
+
+==infine vado in api postcontroller e la facccio
+ci sono due modi
+
+METODO 1 PIU MACCHINO MA PIU LOGICO
+
+public function getPostsByTag($id){
+//metodo 1 piu facile ma meno bello,
+//prendo il tag con tutti post ad esso relazionati
+$tag = Tag::where('id', $id)->with('posts')->first();
+
+    //creo un array vuoto da esportare
+    $post = [];
+
+    // ciclo i post del tag
+    foreach ($tag->posts as $post) {
+        //popolo l'array, prendo ogni post con le sue relazioni e lo pusho in $post
+    $post[] = Post::where('id', $post->id)->with('category', 'tags' , 'user')->first();
+    }
+    $categories = Category::all();
+
+$tags = Tag::all();
+
+    //infine stampo l'array
+    return response()->json(compact('posts', 'categories' , 'tags'));
+
+}
+
+METODO 2
+query many to many con filtro
+
+public function getPostsByTag($id) {
+    //metodo 2
+    //prendo i post con tutte le relazioni
+    $posts = Post::with('category', 'tags' , 'user')
+        //faccio una sottoquery dell'elemento in relazione
+        ->whereHas('tags' , function(Builder $query) use ($id) {
+//all'interno fa la sottoquery
+$query->where('tag_id', $id);
+
+        })->paginate(10);
+
+    $tags = Tag::all();
+    $categories = Category::all();
+
+    //infine stampo l'array
+    return response()->json(compact('posts', 'categories' , 'tags'));
+
+# }
+
+====LOADING
+//imposto il loaded come falso
+ata() {
+return {
+posts: [],
+links: [],
+first_page_url: null,
+last_page_url: null,
+current_page: null,
+last_page: null,
+categories: [],
+tags: [],
+//imposto il loaded come falso
+loaded: false
+};
+
+methods: {
+getApi(endpoint) {
+this.loaded = false;
+
+            axios.get(endpoint)
+                .then(results => {
+                    this.posts = results.data.posts.data;
+                    this.links = results.data.posts.links;
+                    this.first_page_url = results.data.posts.first_page_url;
+                    this.last_page_url = results.data.posts.last_page_url;
+                    this.current_page = results.data.posts.current_page;
+                    this.last_page = results.data.posts.last_page;
+                    this.categories = results.data.categories;
+                    this.tags = results.data.tags;
+                    //qua il loading diventa true alla fine di tutte le chiamate
+                    this.loaded = true;
+                });
+        },
+
+infine lo metto in pagina
+
+        <Loader v-if="!loaded" />
+
+        <div v-else class="page-wrapper">
+
+====BOTTONE RESET
+
+DEVE CHIAMARE LA FUNZIONE AL MOUNTED CHE DA TUTTI I RIOSULTATI SENZXA FILTRO

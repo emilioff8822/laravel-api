@@ -36,4 +36,5 @@ namespace('Api')
         Route::get('/categories', [PostController::class, 'getCategories']);
         Route::get('/tags', [PostController::class, 'getTags']);
         Route::get('/post-category/{id}', [PostController::class, 'getPostsByCategory']);
+        Route::get('/post-tag/{id}', [PostController::class, 'getPostsByTag']);
     });

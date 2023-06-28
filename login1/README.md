@@ -721,3 +721,25 @@ poi nel bottone
 
 =====
 DETTAGLIO POST
+cliccando sul post passiamo uno slug ad una rotta di vue che carica una pagina che ricevera uno slug come parametro
+a quel punto fara la chiamata all'API che tireragiu il singolo post in base allo slug
+
+La rotta che va chiamata e quindi una rotta con un parametro che e' lo slug, quindi all'interno del router devo creare una rotta
+con:
+
+-creo una pagina vuer postdetail
+
+--VADO NEL ROUTER PRIMA IMPORTO LA NUOVA PAGINA
+
+import PostDetail from './pages/PostDetail.vue';
+
+POI AGGIUNGO IL NUOVO PATH CON SLUG
+
+path: '/dettaglio-post/:slug',
+name: 'postDetail',
+component: PostDetail
+},
+
+-NELL ITEM POST metto il router link con la rotta dettaglio ED IL PARAMETRO SLUG
+
+<h3><router-link :to="{name: 'postDetail', params:{slug: post.slug}}">Titolo Post: {{ post.title }}</router-link></h3>

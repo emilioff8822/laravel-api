@@ -39,8 +39,10 @@ export default {
 
 <template>
     <div>
-        <h3> Titolo Post: {{post.title}} -Id: {{post.id}}</h3>
-        <p class="date"> <strong>Scritto il giorno:</strong> {{ formattedData }}</p>
+
+        <h3><router-link :to="{name: 'postDetail', params:{slug: post.slug}}">Titolo Post: {{ post.title }}</router-link></h3>
+
+        <p class="date"> <strong>Scritto il giorno:</strong> {{ formattedData }} <i>by {{ post.user.name }}</i></p>
         <p v-html="category"></p>
         <ul>
             <li class="badge badge-tag" v-for="tag in post.tags" :key="tag.id">{{ tag.name }}</li>

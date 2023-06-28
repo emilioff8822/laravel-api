@@ -7,15 +7,22 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
 
 public function index(){
+    //aggiungo user prendere l'user
+    $posts = Post::with('category' , 'tags', 'user' )->paginate(10);
+    //voglio mettere tutto dentro index per fare una sola chiamata api
+    $categories = Category::all();
+    $tags = Tag::all();
 
-        $posts = Post::with('category' , 'tags')->paginate(10);
 
-        return response()->json($posts);
+
+
+    return response()->json(compact('posts', 'categories' , 'tags'));
 
 }
 
@@ -31,13 +38,34 @@ public function getCategories(){
 
 //voglio cliccare su una categorie a e visualizzare tutti i pos che c'e' l'hanno
 //devo quindi creare una funzione che mostri il post in base alla categoria che passo
-//sto creando un altra API
+//sto creando UNA TERZA API
 
 public function getPostsByCategory($id){
-$posts = Post::where('category_id', $id)->with('category', 'tags')->paginate(10);
-return response()->json($posts);
+$posts = Post::where('category_id', $id)->with('category', 'tags' , 'user')->paginate(10);
+$categories = Category::all();
+$tags = Tag::all();
+
+    return response()->json(compact('posts', 'categories' , 'tags'));
 }
 
+
+public function getPostsByTag($id) {
+    //metodo 2
+    //prendo i post con tutte le relazioni
+    $posts = Post::with('category', 'tags' , 'user')
+        //faccio una sottoquery dell'elemento in relazione
+        ->whereHas('tags' , function(Builder $query) use ($id) {
+            //all'interno fa la sottoquery
+            $query->where('tag_id', $id);
+
+        })->paginate(10);
+
+    $tags = Tag::all();
+    $categories = Category::all();
+
+    //infine stampo l'array
+    return response()->json(compact('posts', 'categories' , 'tags'));
+}
 
 
 

@@ -34,6 +34,12 @@ class Post extends Model
         public function tags() {
         return $this->belongsToMany(Tag::class);
         }
+
+        //creo la relazione ONE TO MANY con user in modo tale da avere anche il nome nella chiamata api
+
+        public function user(){
+        return $this->belongsTo(User::class);
+        }
     public static function generateSlug($str){
 
         $slug = Str::slug($str, '-');

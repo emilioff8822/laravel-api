@@ -8,6 +8,7 @@ import Contacts from './pages/Contacts.vue';
 import About from './pages/About.vue';
 import Error404 from './pages/Error404.vue';
 import Blog from './pages/Blog.vue';
+import PostDetail from './pages/PostDetail.vue';
 
 //inizializzo una variabile che chiamo route
 const router = createRouter({
@@ -42,6 +43,11 @@ const router = createRouter({
             path: '/blog',
             name: 'blog',
             component: Blog
+        },
+         {
+            path: '/dettaglio-post/:slug',
+            name: 'postDetail',
+            component: PostDetail
         },
 
         //rotta 404 da mettere infondo

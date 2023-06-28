@@ -531,3 +531,27 @@ in blog vue metto un altra funzione in methods
 3infine per staparle aggiungo al bottone delle categorie il click per visualizzare ilo dettaglio dei post con una specifica categoria
 
 <button class="btn-cat" v-for="category in categories " :key="category.id" @click="getPostCategory(category.id)">{{category.name}}</button>
+
+**\_**-
+
+28 GIUGNO
+
+AGGIUNTA NOME DI CHI HA FATTO POST
+(NUOVA ONE TO MANY)
+
+-nel post controller API modifico la chiamata api aggiungendo user
+$posts = Post::with('category' , 'tags', 'user' )->paginate(10);
+
+-Bisogna creare la relazione tra User e Post all'interno dei modelli
+sara' una relazione ONE TO MANY , un user tanti post
+
+Nel model Post scrivo:
+public function user(){
+return $this->belongsTo(User::class);  
+ }
+Nel model User scrivo:
+public function posts (){
+return $this->hasMany(Post::class);
+}
+
+-Vado in itemPost

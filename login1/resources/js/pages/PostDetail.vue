@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios';
-import { store } from '../store/store';
+import { store } from '../store/store.js';
 import Loader from '../components/Loader.vue';
 
 export default {
@@ -37,14 +37,22 @@ export default {
 
 <template>
     <div class="container-inner">
-        <div v-if="loaded">
-            <h1>Titolo Post {{ post.title }}</h1>
+         <div v-if="post">
+
+            <p> <strong>Titolo Post:</strong></p> <p>{{ post.title }}</p>
+
         </div>
         <Loader v-else />
 
 
+    </div>
+
+</template>
 
 
-</div></template>
+<style lang="scss" scoped>
 
-<style></style>
+div{
+    margin: 10px;
+}
+</style>

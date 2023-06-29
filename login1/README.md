@@ -836,3 +836,109 @@ public function getPostDeatail($slug){
 }
 
 }
+ 
+ per staaprle infine 
+
+
+
+            <div class="image">
+        <img :src="post.image_path" :alt="post.image_original_name">
+        <i>{{ post.image_original_name }}</i>
+           </div>
+
+           <p v-html="post.text"></p>
+
+        </div>
+
+
+==== MOTORER RICERCA IN BASE A NOME
+
+- DENTRO BLOG DEVO IMPORTARE UN FORM DI RICERCA E INVIO
+
+CREO UN componente FROMSEATCH VUE
+
+-DEVO salvare quello che scrivo da qualche parte quindi nei data di form search vue  creo  tosearch che diefault e
+una stringa vuota
+
+- la utilizziamo col v-model 
+
+    <input type="text" name="" id="" placeholder="Cerca" v-model.trim="tosearch"  @keyup.enter="getApi()">
+
+
+- al click il bottone tramite una funzione deve richiamre l'API' questa funzione non ce lho e la devo inserire nei methods
+sempre di formsearch vue
+
+methods: {
+        getApi() {
+        console.log(this.tosearch);
+    }
+    }
+ el il bottone lo chiama     <button @click="getApi()"> Invia</button>'
+
+   
+- PER FARE FUNZIONARE LA RICERCA DEVO CREARE L'API CHE RICERCA UNA PORZIONE DI TITOLO
+
+-VADO NEL POST CONTROLLER API e creo la funzione searh c
+public function search($tosearch) {
+
+
+    // "Post::where" è usato per filtrare i risultati in base ad una certa condizione.
+    // 'title', 'like', '%'.$tosearch.'%' indica che stiamo cercando i post i cui titoli contengono la parola o la frase che l'utente ha digitato.
+    // Il simbolo "%" prima e dopo "$tosearch" indica che stiamo cercando qualsiasi post che contiene la parola o frase di ricerca in qualsiasi punto del titolo.
+    $posts = Post::where('title', 'like', '%'.$tosearch.'%')
+
+        // "->with('user', 'category', 'tags')" è utilizzato per caricare le relazioni del modello Post. In questo caso, stiamo caricando le relazioni 'user', 'category', e 'tags'. Questo è chiamato "eager loading" e aiuta a migliorare le prestazioni delle query evitando il problema del "N+1 query problem".
+        ->with('user', 'category', 'tags')
+
+        // ->get()  o paginate è usato per eseguire la query e ottenere i risultati. Questi risultati vengono poi assegnati alla variabile $posts.
+        ->paginate(10);
+
+    // Infine, stiamo restituendo i risultati della query come una risposta JSON.
+    //a funzione compact in PHP prende una lista di nomi di variabili e crea un array associativo che contiene variabili e i loro valori. I nomi delle variabili passate come argomenti alla funzione compact diventano le chiavi dell'array, e i valori delle variabili diventano i valori dell'array
+    //return response()->json(compact('posts', 'categories' , 'tags')); restituirà un JSON con tre oggetti: posts, categories, e tags. Ogni oggetto conterrà i dati corrispondenti recuperati dal database.
+    return response()->json(compact('posts'));
+}
+
+
+cosa fa il compact nota: compact in PHP prende una lista di nomi di variabili (come stringhe) e genera un array associativo. Le chiavi dell'array sono i nomi delle variabili e i valori dell'array sono i valori delle variabili.
+
+INFINE VADO NELL' API PHP
+
+E CREO UNA ROTTA ROUTE     Route::get('/search{tosearch}', [PostController::class, 'search']);
+
+
+-- il form deve ripopolare il blog con i posts
+
+spostiamo i post nello store.js, li tolgo dai data di BLOG VUE e li metto nello store js
+blo vue diventa cosi 
+ axios.get(endpoint)
+                .then(results => {
+                    store.posts = results.data.posts.data;
+                    this.links = results.data.posts.links;
+                    this.first_page_url = results.data.posts.first_page_url;
+                    this.last_page_url = results.data.posts.last_page_url;
+                    this.current_page = results.data.posts.current_page;
+                    this.last_page = results.data.posts.last_page;
+                    this.categories = results.data.categories;
+                    this.tags = results.data.tags;
+                    //qua il loading diventa true alla fine di tutte le chiamate
+                    this.loaded = true;
+                });
+
+                ItemPost v-for="post in store.posts" :key="post.id" :post="post" />
+
+store js diventa cosi
+
+import { reactive } from "vue";
+
+export const store = reactive({
+
+    apiUrl: 'http://127.0.0.1:8000/api/',
+    posts:[]
+
+})
+
+
+ORA DEVO FARE LA CHIAMTA API NEL FORM E SOVRASCRIVERE I DATI  CHE CI SONO NELLO STORE CON QUELLI DI QUESTA CHIAMATA
+
+VADO IN FORMSEARCH

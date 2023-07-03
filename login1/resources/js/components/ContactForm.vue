@@ -14,12 +14,15 @@ export default {
             name: '',
             email: '',
             message: '',
-            errors:{}
+            errors: {},
+            sending: false,
+            success:false
     }
     },
     methods: {
         //prende i data aggancaiti al v model li impacchetta e comunica con api
         sendForm() {
+            this.sending = true;
             const data = {
                 name: this.name,
                 email: this.email,
@@ -28,7 +31,9 @@ export default {
             //metto il collegamento con axios per comunicare con l'api concatenandndo la nuova rotta contacts. primo parametro url secondo parametro oggetto
             axios.post(`${store.apiUrl}contacts`, data)
                 .then(result => {
+                    this.sending = false;
                     console.log(result.data);
+                    this.success = result.data.success;
                     if (result.data.success) {
                         this.errors = {};
 
@@ -45,7 +50,7 @@ export default {
 </script>
 
 <template>
-    <form @submit.prevent="sendForm()">
+    <form v-if="!success" @submit.prevent="sendForm()">
         <div>
             <input :class="{'error-form' : errors.name}" v-model.trim="name" type="text"  placeholder="Nome">
             <p v-for="(error,index) in errors.name" :key="index" class="error-msg">{{ error }}</p>
@@ -63,8 +68,10 @@ export default {
 
         </div>
 
-        <button type="submit">Invia</button>
+        <button type="submit" :disabled="sending">{{sending ? 'Invio in coso...' : 'Invia'}}</button>
     </form>
+
+    <div v-else> <h2 class="success"> Form inviato correttamente</h2></div>
 </template>
 
 <style lang="scss" scoped>
@@ -89,5 +96,9 @@ button{
 .error-msg{
     color: red;
     font-size: .9rem;
+}
+
+.success{
+    color: green;
 }
 </style>

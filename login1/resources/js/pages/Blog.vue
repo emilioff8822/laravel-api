@@ -3,16 +3,17 @@ import { store } from '../store/store';
 import axios from 'axios';
 import ItemPost from '../components/ItemPost.vue';
 import Loader from '../components/Loader.vue';
+import FormSearch from '../components/FormSearch.vue';
 
 export default {
     name: 'Contacts',
     components: {
         ItemPost,
-        Loader
+        Loader,
+        FormSearch
     },
     data() {
         return {
-            posts: [],
             links: [],
             first_page_url: null,
             last_page_url: null,
@@ -21,7 +22,8 @@ export default {
             categories: [],
             tags: [],
             //imposto il loaded come falso
-            loaded: false
+            loaded: false,
+            store
         };
     },
     methods: {
@@ -31,7 +33,7 @@ export default {
 
             axios.get(endpoint)
                 .then(results => {
-                    this.posts = results.data.posts.data;
+                    store.posts = results.data.posts.data;
                     this.links = results.data.posts.links;
                     this.first_page_url = results.data.posts.first_page_url;
                     this.last_page_url = results.data.posts.last_page_url;
@@ -93,13 +95,17 @@ export default {
 
 <template>
     <div class="container-inner">
+
+        <FormSearch />
+
         <h1>Blog</h1>
+
 
         <Loader v-if="!loaded" />
 
         <div v-else class="page-wrapper">
             <div class="left">
-                <ItemPost v-for="post in posts" :key="post.id" :post="post" />
+                <ItemPost v-for="post in store.posts" :key="post.id" :post="post" />
 
                 <button @click="getApi(first_page_url)" :disabled="current_page == 1">
                     Inizio

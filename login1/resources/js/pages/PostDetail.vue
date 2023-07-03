@@ -72,11 +72,19 @@ export default {
 
             <p> <strong>Titolo Post:</strong></p> <p>{{ post.title }}</p>
             <i><strong>Scritto il giorno: </strong>{{formattedData}} <strong>da:</strong> {{ post.user.name }}</i>
-
             <div>
+                <p v-html="category"></p>
+                <ul>
+                    <li class="badge badge-tag" v-for="tag in post.tags" :key="tag.id">{{ tag.name }}</li>
+                </ul>
+            </div>
+
+            <div class="image">
         <img :src="post.image_path" :alt="post.image_original_name">
         <i>{{ post.image_original_name }}</i>
            </div>
+
+           <p v-html="post.text"></p>
 
         </div>
         <Loader v-else />
@@ -89,7 +97,14 @@ export default {
 
 <style lang="scss" scoped>
 
-div{
-    margin: 10px;
+.image{
+    margin: 20px 0;
+}
+
+.badge{
+margin-top: 10px;
+}
+p {
+    margin-top: 10px;
 }
 </style>

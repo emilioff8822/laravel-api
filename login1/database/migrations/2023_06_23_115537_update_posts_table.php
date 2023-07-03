@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class UpdatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,15 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            //creo la foreign key mancante
-            $table->unsignedBigInteger('user_id')->after('id');
-            //2 assegno la foreign key alla colonna creata ovvero dico che la colonna appena creata e una FK
+            // Verifica se la colonna user_id non esiste già
+            if (!Schema::hasColumn('posts', 'user_id')) {
+                // Crea la colonna della foreign key
+                $table->unsignedBigInteger('user_id')->after('id')->nullable();
 
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null');
+                // Assegna la foreign key alla colonna creata
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('set null');
+            }
         });
     }
 
@@ -34,12 +36,11 @@ return new class extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-                        //1 elimino la foreign key Tra parentesi devo mettere il nome della colonna quindi uso quadre
-
-            $table->dropForeign(['user_id']);
-                        //2 cancella la colonna
-
-            $table->dropColumn('user_id');
+            // Rimuovi la foreign key se esiste
+            if (Schema::hasColumn('posts', 'user_id')) {
+                $table->dropForeign(['user_id']);
+                $table->dropColumn('user_id');
+            }
         });
     }
-};
+}

@@ -1,4 +1,11 @@
 <script>
+//per comunicare con la api con il metodo POST importo axios
+
+import axios from "axios";
+import { store } from '../store/store';
+
+
+
 export default {
     name: 'ContactForm',
     data() {
@@ -6,7 +13,8 @@ export default {
         return {
             name: '',
             email: '',
-            message: ''
+            message: '',
+            errors:{}
     }
     },
     methods: {
@@ -17,7 +25,19 @@ export default {
                 email: this.email,
                 message: this.message,
             }
-            console.log(data);
+            //metto il collegamento con axios per comunicare con l'api concatenandndo la nuova rotta contacts. primo parametro url secondo parametro oggetto
+            axios.post(`${store.apiUrl}contacts`, data)
+                .then(result => {
+                    console.log(result.data);
+                    if (result.data.success) {
+                        this.errors = {};
+
+
+                    } else {
+                        this.errors = result.data.errors;
+                    }
+
+               })
 
     }
     },
@@ -27,15 +47,15 @@ export default {
 <template>
     <form @submit.prevent="sendForm()">
         <div>
-            <input v-model.trim="name" type="text" name="name" id="" placeholder="Nome">
+            <input :class="{'error-form' : errors.name}" v-model.trim="name" type="text"  placeholder="Nome">
         </div>
 
         <div>
-            <input  v-model.trim="email" type="email" name="email" id="" placeholder="E-mail">
+            <input :class="{ 'error-form': errors.email }"  v-model.trim="email" type="email"   placeholder="E-mail">
         </div>
 
         <div>
-            <textarea  v-model.trim="message" name="message" id="" cols="30" rows="10"></textarea>
+            <textarea :class="{ 'error-form': errors.message }"  v-model.trim="message"  cols="30" rows="10"></textarea>
         </div>
 
         <button type="submit">Invia</button>
@@ -54,5 +74,10 @@ button {
 }
 button{
     cursor: pointer;
+}
+
+.error-form{
+        border: 1px solid red;
+
 }
 </style>

@@ -27,7 +27,10 @@ class NewContact extends Mailable
      * @return void
      */
 
-     //2 lo metto nel costruttore
+     //2 lo metto nel costruttore il lead che passo e' una nuova entita della tabella
+     //lead e' un oggetto che conterra le informazioni che ho stabilito nella tabella, quindi nome email e message
+     //si crea il lead quando il form viene verificato e il dato salvato nella tabella
+     //il lead che gli opasso alla funzione e' quello del model Lead che devo creare e della tabella che ho creto
     public function __construct($_lead)
     {
     $this->lead = $_lead;
@@ -41,7 +44,8 @@ class NewContact extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'New Contact',
+            subject: 'Nuovo Contatto',
+            replyTo: $this->lead->email,
         );
     }
 
@@ -53,8 +57,8 @@ class NewContact extends Mailable
     public function content()
     {
         return new Content(
-            //nel content gestisco la view dell'html relativa al blade
-            view: 'view.name',
+            //nel content gestisco la view dell'html relativa al blade . non ce bisogno di fare il compact glielo passa implicitamente
+            view: 'mail.new-contact',
         );
     }
 

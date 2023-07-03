@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,3 +39,6 @@ Route::namespace('Api')
         Route::get('/categories', [PostController::class, 'getCategories']);
         Route::get('/tags', [PostController::class, 'getTags']);
 });
+
+//creo la rotta per le mail collegata al Leadcontroller
+Route::post('/contacts', [LeadController::class, 'store']);

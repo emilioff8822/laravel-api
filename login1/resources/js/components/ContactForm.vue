@@ -48,14 +48,19 @@ export default {
     <form @submit.prevent="sendForm()">
         <div>
             <input :class="{'error-form' : errors.name}" v-model.trim="name" type="text"  placeholder="Nome">
+            <p v-for="(error,index) in errors.name" :key="index" class="error-msg">{{ error }}</p>
         </div>
 
         <div>
             <input :class="{ 'error-form': errors.email }"  v-model.trim="email" type="email"   placeholder="E-mail">
+                <p v-for="(error, index) in errors.email" :key="index" class="error-msg">{{ error }}</p>
+
         </div>
 
         <div>
             <textarea :class="{ 'error-form': errors.message }"  v-model.trim="message"  cols="30" rows="10"></textarea>
+            <p v-for="(error, index) in errors.message" :key="index" class="error-msg">{{ error }}</p>
+
         </div>
 
         <button type="submit">Invia</button>
@@ -67,7 +72,7 @@ input,
 textarea,
 button {
     width: 100%;
-    margin: 10px 0;
+    margin-top: 10px;
     padding: 15px;
     border-radius: 10px;
     border: 1px solid lightslategray;
@@ -79,5 +84,10 @@ button{
 .error-form{
         border: 1px solid red;
 
+}
+
+.error-msg{
+    color: red;
+    font-size: .9rem;
 }
 </style>

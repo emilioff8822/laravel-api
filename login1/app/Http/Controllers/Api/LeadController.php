@@ -3,9 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+//importo il NewContact in mail
+use App\Mail\NewContact;
+use App\Models\Lead;
 use Illuminate\Http\Request;
 //importo il validator per il punto 2
 use Illuminate\Support\Facades\Validator;
+
+//IMPORTO MAIL la facades
+use Illuminate\Support\Facades\Mail;
+
 
 class LeadController extends Controller
 {
@@ -42,7 +49,21 @@ $data = request()->all();
             return response()->json(compact('success', 'errors'));
         }
 //4 se sono valdi salvo i dati nel db
-//6 invio la mail
+//per salvere i dati nel dbvado nel  model LEAD con il protected fillable
+//dopo aver fatto il lead lo salvo nel db con il fill
+//Cosi facendo ogni cosa che invio nel form e salvata nel db
+
+        $new_lead = new Lead();
+        $new_lead->fill($data);
+        $new_lead->save();
+        //oppure con create faccio un unico passaggio
+        //$new_lead=Lead::create($data)
+
+
+//5 invio la mail , istanzio un new contact passandogli il new lead
+    Mail::to('info@boolean.com')->send(new NewContact($new_lead));
+
+
 // 7 restituisco un jsom succeess  = true
 $success = true;
 
